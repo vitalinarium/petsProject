@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}<p>Hello</p>{% endblock %}
+
+{% block content %}
+    {%if request.user.is_authenticated %}
+    
+    <span>Hi, {{ request.user.username | title }}</span>
+    <a href="{% url 'users:logout' %}">Logout</a>
+    <a href="{% url 'adoption:animals' %}">All pets</a>
+    <a href="{% url 'adoption:search_animal' %}">Search</a>
+    {%else%}
+    <a href="{% url 'users:login' %}">Login</a>
+    <a href="{% url 'users:register' %}">Register</a>
+    {%endif%}
+    <h1>Add animal</h1>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {{form.as_p}}
+      <button>Add</button>
+      
+    </form>
+{% endblock %}
