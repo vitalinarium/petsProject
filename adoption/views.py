@@ -29,7 +29,7 @@ def add_animal(request):
 
 def my_animals(request):
     user_name = request.user
-    animals = Animal.objects.filter(added_by_user=user_name).values()
+    animals = Animal.objects.filter(added_by_user=user_name)
     for pet in animals:
         print(pet)
     context = {'animals': animals, "added_by_user":user_name}
@@ -42,7 +42,7 @@ def search_animal(request):
         searched_category = request.POST["category"]
         # searched_age = form_search_animal["age"]
         searched_city = request.POST["city"]
-        data = Animal.objects.filter(category=searched_category,city=searched_city).values()
+        data = Animal.objects.filter(category=searched_category) | Animal.objects.filter(city=searched_city)
         return render (request, template_name="searched_animal.html", context={"animals":data, "searched":searched_category})
     else:
         return render (request, template_name="search_animal.html", context={"form":form_search_animal})
