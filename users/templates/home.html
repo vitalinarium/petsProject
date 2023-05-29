@@ -3,16 +3,7 @@
 {% block title %}<p>Hello</p>{% endblock %}
 
 {% block content %}
-    {%if request.user.is_authenticated %}
-    
-    <span>Hi {{ request.user.username | title }}</span>
-    <a href="{% url 'users:logout' %}">Logout</a>
-    <a href="{% url 'adoption:animals' %}">All pets</a>
-    <a href="{% url 'adoption:add_animal' %}">Add pet</a>
-    {%else%}
-    <a href="{% url 'users:login' %}">Login</a>
-    <a href="{% url 'users:register' %}">Register</a>
-    {%endif%}
+ 
 
     <ul class="animals">
 

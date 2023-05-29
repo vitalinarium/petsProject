@@ -3,18 +3,7 @@
 {% block title %}<p>Hello</p>{% endblock %}
 
 {% block content %}
-    {%if request.user.is_authenticated %}
     
-    <span>Hi, {{ request.user.username | title }}</span>
-    <a href="{% url 'users:logout' %}">Logout</a>
-    <a href="{% url 'adoption:my_animals' %}">My pets</a>
-    <a href="{% url 'adoption:add_animal' %}">Add pet</a>
-    <a href="{% url 'adoption:search_animal' %}">Search</a>
-    {%else%}
-    <a href="{% url 'users:login' %}">Login</a>
-    <a href="{% url 'users:register' %}">Register</a>
-    
-    {%endif%}
 
     <ul class="animals">
 
@@ -34,8 +23,15 @@
         <span class="description">Description: {{pet.description}}</span>
         <br>
           <img class="bg" src="{{pet.image.url}}" width="150px" height="150px"/>
-        <hr>
+       
       </li>
+      
+      {% if user == pet.added_by_user %}
+        <a href="{% url 'adoption:my_animals' %}">My pets</a>
+      {% else %}
+        <a href="{% url 'adoption:adopt_animal' pet.id %}">Adopt</a>
+      {%endif%}
+      <hr>
         {% endfor %}
     </ul>
 {% endblock %}

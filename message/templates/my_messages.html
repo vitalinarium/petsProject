@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}<p>Hello</p>{% endblock %}
+
+{% block content %}
+    
+    <p>Outcome messages</p>
+    <ul class="messages">    
+    {% for message in outcome_messages %}       
+      
+    <li class="outcome_message">
+      <span class="written">written to user: {{message.written_to_user}}</span>
+      <br>
+      <span class="text">text message: {{message.text_message}}</span>
+      <br>
+      <span class="name">date: {{message.date}}</span>         
+    </li>  
+    <hr>   
+    {% endfor %}
+    </ul>
+
+    <p>Income messages</p>
+    <ul class="messages">    
+    {% for message in income_messages %}       
+      
+    <li class="income_message">
+      <span class="written">written by user: {{message.written_by_user}}</span>
+      <br>
+      <span class="text">text message: {{message.text_message}}</span>
+      <br>
+      <span class="name">date: {{message.date}}</span>         
+    </li>  
+    <hr>   
+    {% endfor %}
+    </ul>
+
+
+{% endblock %}

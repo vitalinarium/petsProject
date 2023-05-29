@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+
+{% block title %}<p>Hello</p>{% endblock %}
+
+{% block content %}
+    
+
+    <p>Edit animal:</p>
+
+    <form action="{% url 'adoption:edit_animal' animal.id %}" method='post'>
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button name="submit">Save changes</button>
+    </form>
+{% endblock %}

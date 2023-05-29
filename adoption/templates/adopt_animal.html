@@ -3,16 +3,14 @@
 {% block title %}<p>Hello</p>{% endblock %}
 
 {% block content %}
-   
-    <ul class="animals">
+    
 
-    {% for pet in animals %}
-        
+    <ul class="animals">
 
     <li class="pet">
       <span class="category">Category: {{pet.category}}</span>
       <br>
-      <span class="addedby">Added by: {{added_by_user}} | {{pet.date}}</span>
+      <span class="addedby">Added by: {{pet.added_by_user}} | {{pet.date}}</span>
       <br>
       <span class="name">Name: {{pet.name}}</span>
       <br>        
@@ -24,10 +22,15 @@
       <br>
         <img class="bg" src="{{pet.image.url}}" width="150px" height="150px"/>
       
-    </li>
-    <a href="{% url 'adoption:edit_animal' pet.id %}">Edit</a>  
-    <a href="{% url 'adoption:delete_animal' pet.id %}">Delete</a> 
-    <hr>   
-    {% endfor %}
+    </li>   
+    <hr>  
     </ul>
+
+    <form method="POST" enctype="multipart/form-data">
+      {% csrf_token %}
+      
+      {{form.as_p}}
+      <button>Send</button>
+      
+    </form>
 {% endblock %}

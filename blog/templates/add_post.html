@@ -4,9 +4,9 @@
 
 {% block content %}
     
-    <h1>Search animal</h1>
+    <h1>Add post</h1>
 
-    <form method="POST" action="{% url 'adoption:search_animal' %}" >
+    <form method="POST" enctype="multipart/form-data">
       {% csrf_token %}
       
       {{form.as_p}}
