@@ -7,6 +7,39 @@ from .forms import AddAnimalForm, SearchAnimalForm
 from .models import Animal
 from message.forms import AddMessage
 from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from django.views.generic import TemplateView
+from .serializer import AnimalSerializer
+from rest_framework.response import Response
+
+
+
+class AnimalView(APIView):
+    
+    def get(self, request):
+        output = [
+            {
+                # "added_by_user" : output.added_by_user,
+                "category" : output.category,
+                "name" : output.name,
+                "age": output.age,
+                "image": output.image.url,
+                "description" :output.description,
+                "city" : output.city,
+                "date" : output.date,
+                "added_by_user": output.added_by_user.username,
+
+            } for output in Animal.objects.all()
+        ]
+        return Response(output)
+    
+    def post(self, request):
+        serializer = AnimalSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        
+
 
 
 def get_animals(request):

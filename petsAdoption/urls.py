@@ -18,12 +18,14 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
+from adoption.views import AnimalView
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("ind/", AnimalView.as_view(), name='front'),
     path('', include('users.urls')),
     path('', include('adoption.urls')),
     path('', include('blog.urls')),
     path('', include('message.urls')),
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

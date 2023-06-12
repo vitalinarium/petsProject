@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views 
 
 app_name = "adoption"   
@@ -6,7 +7,9 @@ app_name = "adoption"
 
 urlpatterns = [
     # path("", views.homepage, name="homepage"),
-    # path("", views.home, name="home"),   
+    # path("", views.home, name="home"),  
+    # path("index", AnimalView.as_view(), name="front"),
+    # path("react", ReactView.as_view(), name="animals"), 
     path("animals", views.get_animals, name="animals"),  
     path("addanimal", views.add_animal, name="add_animal"), 
     path("myanimals", views.my_animals, name="my_animals"),
