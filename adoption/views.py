@@ -1,7 +1,5 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from django.template import loader
-from django.views.generic import ListView, DetailView, CreateView
+from rest_framework import generics
 from django.views.generic.base import View
 from .forms import AddAnimalForm, SearchAnimalForm
 from .models import Animal
@@ -11,15 +9,28 @@ from rest_framework.views import APIView
 from django.views.generic import TemplateView
 from .serializer import AnimalSerializer
 from rest_framework.response import Response
+from rest_framework.permissions import SAFE_METHODS, AllowAny, IsAuthenticated, IsAuthenticatedOrReadOnly, BasePermission, IsAdminUser, DjangoModelPermissions
+from django.shortcuts import get_object_or_404
+from rest_framework.views import APIView
+from rest_framework import filters
 
+class AddAnimalPermission(BasePermission):
+    message = 'Adding animals is restricted to the authorized persons only.'
 
+    def has_object_permission(self, request, view, obj):
+
+        if request.method in SAFE_METHODS:
+            return True
+
+        return obj.added_by_user == request.user
+    
 
 class AnimalView(APIView):
     
     def get(self, request):
         output = [
             {
-                # "added_by_user" : output.added_by_user,
+                
                 "category" : output.category,
                 "name" : output.name,
                 "age": output.age,
@@ -38,8 +49,6 @@ class AnimalView(APIView):
         if serializer.is_valid(raise_exception=True):
             serializer.save()
             return Response(serializer.data)
-        
-
 
 
 def get_animals(request):

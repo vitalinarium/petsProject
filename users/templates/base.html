@@ -12,7 +12,7 @@
     {%if request.user.is_authenticated %}
     
     <span>Hi, {{ request.user.username | title }}</span>
-    <a href="{% url 'users:logout' %}">Logout</a>
+    
     <a href="{% url 'adoption:animals' %}">All pets</a>
     <a href="{% url 'adoption:my_animals' %}">My pets</a>
     <a href="{% url 'adoption:add_animal' %}">Add pet</a>

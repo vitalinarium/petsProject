@@ -1,46 +1,55 @@
-from django.shortcuts import  render, redirect, HttpResponse
-from .forms import RegisterForm, LoginForm
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render
+from rest_framework import status
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from django.http import JsonResponse
+from users.serializer import MyTokenObtainPairSerializer, RegisterSerializer
+from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework import generics
+from django.contrib.auth.models import User
+from rest_framework.permissions import AllowAny, IsAuthenticated
+from rest_framework.decorators import api_view, permission_classes
+import json
 
-from django.contrib import messages
-from django.contrib.auth.decorators import login_required
+# Create your views here.
 
-def register(request):
-	form = RegisterForm()
-	if request.method == "POST":
-		form = RegisterForm(request.POST)
-		if form.is_valid():
-			user = form.save()
-			login(request, user)
-			messages.success(request, "Registration successful." )
-			return redirect("/")
-		messages.error(request, "Unsuccessful registration. Invalid information.")
-	
-	return render (request=request, template_name="register.html", context={"form":form})
 
-def home(request):
-	return render (request=request, template_name="home.html")
+class MyTokenObtainPairView(TokenObtainPairView):
+    serializer_class = MyTokenObtainPairSerializer
 
-def log_in(request):
-	form = LoginForm()
-	if request.method == 'POST':
-		username = request.POST.get('username')
-		password = request.POST.get('password')
-		user = authenticate(username=username,password=password)
-		if user:
-			if user.is_active:
-				login(request,user)
-				return redirect("/")
-			else:
-				return HttpResponse("Account now active")
-		else:
-			print("Login Unsuccessful")
-			return HttpResponse("Your username and/or password are not correct")
-	
-	else:
-		return render(request,'login.html',context={"form":form})
 
-@login_required
-def log_out(request):
-	logout(request)
-	return redirect("/")
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
+
+
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        '/users/token/',
+        '/users/register/',
+        '/users/token/refresh/',
+        '/users/test/'
+    ]
+    return Response(routes)
+
+
+@api_view(['GET', 'POST'])
+@permission_classes([IsAuthenticated])
+def testEndPoint(request):
+    if request.method == 'GET':
+        data = f"Congratulation {request.user}, your API just responded to GET request"
+        return Response({'response': data}, status=status.HTTP_200_OK)
+    elif request.method == 'POST':
+        try:
+            body = request.body.decode('utf-8')
+            data = json.loads(body)
+            if 'text' not in data:
+                return Response("Invalid JSON data", status.HTTP_400_BAD_REQUEST)
+            text = data.get('text')
+            data = f'Congratulation your API just responded to POST request with text: {text}'
+            return Response({'response': data}, status=status.HTTP_200_OK)
+        except json.JSONDecodeError:
+            return Response("Invalid JSON data", status.HTTP_400_BAD_REQUEST)
+    return Response("Invalid JSON data", status.HTTP_400_BAD_REQUEST)

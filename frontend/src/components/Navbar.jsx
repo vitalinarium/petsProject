@@ -11,7 +11,7 @@ function Navbar() {
         <br />
         <NavLink exact to="/animals">Animals</NavLink>
         <br />
-        <NavLink exact to="/header">Header</NavLink>
+        <NavLink exact to="/blog">Blog</NavLink>
       </div>
     );
   };

@@ -20,12 +20,21 @@ from django.conf import settings
 from django.conf.urls.static import static
 from adoption.views import AnimalView
 
+from blog.views import BlogView
+from rest_framework.authtoken.views import obtain_auth_token
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("ind/", AnimalView.as_view(), name='front'),
-    path('', include('users.urls')),
+    path("get_animals/", AnimalView.as_view(), name='get_animals'),
+   
+    # path("my_animals/", MyAnimalView.as_view(), name='get_myanimals'),
+    path("blog/", BlogView.as_view(), name='blog'),
+    
     path('', include('adoption.urls')),
     path('', include('blog.urls')),
     path('', include('message.urls')),
-] +  static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    
+    path('users/', include("users.urls"))
+    # path('api/users/', include('users.urls')),
+] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

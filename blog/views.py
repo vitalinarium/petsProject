@@ -2,7 +2,33 @@ from django.shortcuts import render, redirect
 from .models import BlogPost
 from .forms import AddPostForm
 from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from .serializer import BlogSerializer
 # Create your views here.
+
+
+class BlogView(APIView):
+
+    def get(self, request):
+        output = [
+            {
+                "written_by_user" : output.written_by_user.username,
+                "title" : output.title,
+                "blog_post": output.blog_post,
+                "date": output.date,
+                
+
+            } for output in BlogPost.objects.all()
+        ]
+        return Response(output)
+    
+    def post(self, request):
+        serializer = BlogSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            serializer.save()
+            return Response(serializer.data)
+        
 def all_posts(request):
     user_name = request.user
     posts = BlogPost.objects.all()    

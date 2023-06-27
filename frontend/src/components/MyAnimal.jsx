@@ -4,7 +4,19 @@ import {Link} from 'react-router-dom';
 import { useAuthStore } from '../store/auth';
 
 
-const Animal = () => {
+const HomeAnimal = () => {
+  const [isLoggedIn, user] = useAuthStore((state) => [
+      state.isLoggedIn,
+      state.user,
+  ]);
+  return (
+      <div>
+          {isLoggedIn() ? <LoggedInView user={user()} /> : <LoggedOutView />}
+      </div>
+  );
+};
+
+const LoggedInView = () => {
   const [data, setData] = useState([]);
   const [user] = useAuthStore((state) => [
     state.user,
@@ -18,12 +30,12 @@ const Animal = () => {
     getData();
   }, []); 
    
-  
+  console.log(user().username)
   return (
     <div>
         
     <hr></hr>
-    {data.map((output, id) => (
+    {data.filter(pet => pet.added_by_user === user().username).map((output, id) => (
       <div key={id}>
         <div>
           <h2>Category: {output.category}</h2>
@@ -35,11 +47,12 @@ const Animal = () => {
           
           <img class="animal" src={"http://127.0.0.1:8000" + output.image}/>
           <br></br>
-          {user().username === output.added_by_user ? <Link to="/myanimals">
-                <button>My animals</button>
-            </Link> : <Link to="/adopt">
-                <button>Adopt</button>
-            </Link>}
+          <Link to="/">
+                <button>Edit</button>
+            </Link>
+            <Link to="/">
+                <button>Delete</button>
+            </Link>
           <hr></hr>
           
         </div>
@@ -48,5 +61,19 @@ const Animal = () => {
   </div>
   );
 };
+
+export const LoggedOutView = ({ title = 'Home' }) => {
+  return (
+      <div>
+          <h1>{title}</h1>
+          <Link to="/login">
+              <button>Login</button>
+          </Link>
+          <Link to="/register">
+              <button>Register</button>
+          </Link>
+      </div>
+  );
+};
    
-  export default Animal;
+  export default HomeAnimal;
