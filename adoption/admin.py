@@ -1,4 +1,10 @@
 from django.contrib import admin
-from adoption.models import Animal
+from .models import Animal
 
-admin.site.register(Animal)
+# Register your models here.
+
+class AnimalAdmin(admin.ModelAdmin):
+  
+  prepopulated_fields = {"slug": ("name", "category", "date")}
+  
+admin.site.register(Animal, AnimalAdmin)

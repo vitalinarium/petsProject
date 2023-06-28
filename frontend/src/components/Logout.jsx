@@ -1,12 +1,19 @@
-import { useEffect } from 'react';
-import { LoggedOutView } from './Home';
-import { logout } from '../utils/auth';
+import React, { useState, useEffect } from 'react';
+import axiosInstance from '../axios';
+import { useNavigate } from 'react-router-dom';
 
-const Logout = () => {
-    useEffect(() => {
-        logout();
-    }, []);
-    return <LoggedOutView title="You have been logged out" />;
-};
+export default function SignUp() {
+	const navigate = useNavigate();
 
-export default Logout;
+	useEffect(() => {
+		const response = axiosInstance.post('users/logout/blacklist/', {
+			refresh_token: localStorage.getItem('refresh_token'),
+		});
+		localStorage.removeItem('access_token');
+		localStorage.removeItem('refresh_token');
+		axiosInstance.defaults.headers['Authorization'] = null;
+        // alert('you logged out')
+		navigate('/login');
+	});
+	return <div>Logout</div>;
+}

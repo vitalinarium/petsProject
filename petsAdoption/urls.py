@@ -18,23 +18,25 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
-from adoption.views import AnimalView
+# from adoption.views import AnimalView
 
 from blog.views import BlogView
-from rest_framework.authtoken.views import obtain_auth_token
+# from rest_framework.authtoken.views import obtain_auth_token
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView 
 
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("get_animals/", AnimalView.as_view(), name='get_animals'),
+    # path("get_animals/", AnimalView.as_view(), name='get_animals'),
    
     # path("my_animals/", MyAnimalView.as_view(), name='get_myanimals'),
-    path("blog/", BlogView.as_view(), name='blog'),
-    
-    path('', include('adoption.urls')),
+    path("blog/", BlogView.as_view(), name='blog'),    
+    path('api/adoption/', include('adoption.urls')),
     path('', include('blog.urls')),
-    path('', include('message.urls')),
-    
-    path('users/', include("users.urls"))
+    path('', include('message.urls')),    
+    path('api/users/', include("users.urls")),
+    path('api-auth/', include('rest_framework.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     # path('api/users/', include('users.urls')),
 ] +  static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

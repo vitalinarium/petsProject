@@ -14,7 +14,7 @@ class AddAnimalForm(forms.ModelForm):
 
     # other_category = forms.CharField(widget=forms.HiddenInput(attrs={"is_hidden":"True"}))
 
-class SearchAnimalForm(forms.Form):
+# class SearchAnimalForm(forms.Form):
     CAT = "CAT"
     DOG = "DOG"
     HUMSTER = "HUMSTER"
