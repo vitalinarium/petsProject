@@ -3,28 +3,18 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 // import Layout from './components/hocs/Layout';
 // import axios from 'axios';
 import Header from "./components/Header";
-// import Animal from "./components/Animal";
-import Login from "./components/Login";
-// import Messages from "./components/Messages";
+import Login from "./components/auth/Login";
 import Home from "./components/Home";
-import Register from "./components/Register"
-// import Blog from "./components/Blog";
-import Logout  from "./components/Logout";
+import Register from "./components/auth/Register"
+import Logout  from "./components/auth/Logout";
 import Footer from "./components/Footer";
-import Animals from "./components/Animals";
-import SingleAnimal from "./components/singleAnimal"
-import MyAnimals from "./components/MyAnimals";
-// import MainWrapper from "./components/hocs/MainWrapper";
-// import PrivateRoute from "./components/hocs/PrivateRoute";
-// import Private from "./components/Private";
-// import MyAnimal from "./components/MyAnimal";
-
-
-// import './App.css';
-
-import PostLoadingComponent from './components/postLoading';
-import axiosInstance from './axios';
-import RenderAnimals from "./components/RenderAnimals";
+import SingleAnimal from "./components/animalViews/singleAnimal"
+import MyAnimals from "./components/animalViews/MyAnimals";
+import RenderAnimals from "./components/animalViews/RenderAnimals";
+import Admin from "./components/Admin"
+import Create from "./components/admin/create"
+import Edit from "./components/admin/edit"
+import Delete from "./components/admin/delete"
 
 function App() {
 
@@ -44,6 +34,10 @@ function App() {
               <Route path="/animals" element={<RenderAnimals/>} />
               <Route path="/animals/:slug" element={<SingleAnimal/>} />
               <Route path="/myanimals" element={<MyAnimals/>} />
+              <Route path="/admin" element={<Admin/>} />
+              <Route path="admin/create" element={<Create/>} />
+              <Route path="admin/edit/:id" element={<Edit/>} />
+              <Route path="admin/delete/:id" element={<Delete/>} />
               {/* {<Route path="/animals" element={<Animal/>} /> }
               /*<Route path="/myanimals" element={<MyAnimal/>} />
               <Route path="/blog" element={<Blog/>} />
@@ -55,7 +49,7 @@ function App() {
         
       {/* </Layout>   */}
       {/* </MainWrapper>    */}
-      <Footer></Footer>
+      {/* <Footer></Footer> */}
     </Router>
   )
 }
